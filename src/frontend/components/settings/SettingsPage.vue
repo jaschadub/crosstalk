@@ -106,6 +106,34 @@
                 </div>
             </div>
 
+            <!-- backup -->
+            <div class="ct-card">
+                <div class="flex border-b border-[var(--ct-border)] p-2.5 font-semibold text-[var(--ct-text)]">Backup</div>
+                <div class="divide-y divide-[var(--ct-border)] text-[var(--ct-muted)]">
+
+                    <div class="flex items-center gap-x-2.5 p-2.5">
+                        <span class="mr-auto">
+                            <span class="block text-sm font-medium text-[var(--ct-text)]">Identity Backup</span>
+                            <span class="block text-sm text-[var(--ct-dim)]">Just your identity key. Losing it means losing this address forever, so keep a copy somewhere safe.</span>
+                        </span>
+                        <button @click="onDownloadBackup('identity')" type="button" class="ct-secondary-button shrink-0 rounded-lg px-2.5 py-1.5 text-sm font-semibold">Download</button>
+                    </div>
+
+                    <div class="flex items-center gap-x-2.5 p-2.5">
+                        <span class="mr-auto">
+                            <span class="block text-sm font-medium text-[var(--ct-text)]">Full Backup</span>
+                            <span class="block text-sm text-[var(--ct-dim)]">Identity, messages, contacts, settings and connection config. To restore, quit the app and extract the zip over your storage folder.</span>
+                        </span>
+                        <button @click="onDownloadBackup('full')" type="button" class="ct-secondary-button shrink-0 rounded-lg px-2.5 py-1.5 text-sm font-semibold">Download</button>
+                    </div>
+
+                    <div class="p-2.5 text-sm text-[var(--ct-dim)]">
+                        Backups contain your private keys. Anyone with the file can message as you, so store it like a password.
+                    </div>
+
+                </div>
+            </div>
+
             <!-- blocked addresses -->
             <div class="ct-card">
                 <div class="flex border-b border-[var(--ct-border)] p-2.5 font-semibold text-[var(--ct-text)]">Blocked Addresses</div>
@@ -285,6 +313,10 @@ export default {
             await this.updateConfig({
                 "lxmf_enforce_inbound_stamp_cost": this.config.lxmf_enforce_inbound_stamp_cost,
             });
+        },
+        onDownloadBackup(backupType) {
+            // navigating to the endpoint triggers a normal file download
+            window.location.href = `/api/v1/backup?type=${backupType}`;
         },
         async onClearNetworkCaches() {
 
